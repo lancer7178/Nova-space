@@ -41,6 +41,8 @@ export default function Navbar() {
                 <Link href="/explore/frozen-planets" onClick={closeExplore} className="block hover:text-gray-300">Frozen Planets</Link>
                 <Link href="/explore/nebulae" onClick={closeExplore} className="block hover:text-gray-300">Nebulae</Link>
                 <Link href="/explore/constellations" onClick={closeExplore} className="block hover:text-gray-300">Constellations</Link>
+                <Link href="/explore/AlienCreaturesSection" onClick={closeExplore} className="block hover:text-gray-300">Alien Creatures</Link>
+                <Link href="/explore/fire-planet" onClick={closeExplore} className="block hover:text-gray-300">Fire Planet</Link>
               </div>
             )}
           </div>
@@ -70,6 +72,9 @@ export default function Navbar() {
                 <Link href="/explore/frozen-planets" className="block hover:text-gray-300">Frozen Planets</Link>
                 <Link href="/explore/nebulae" className="block hover:text-gray-300">Nebulae</Link>
                 <Link href="/explore/constellations" className="block hover:text-gray-300">Constellations</Link>
+                <Link href="/explore/AlienCreaturesSection" className="block hover:text-gray-300">Alien Creatures</Link>
+                <Link href="/explore/fire-planet" className="block hover:text-gray-300">Fire Planet</Link>
+
               </div>
             </details>
           </div>

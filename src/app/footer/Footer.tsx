@@ -36,6 +36,8 @@ export default function Footer() {
             <li><Link href="/explore/frozen-planets" className="hover:text-gray-300">Frozen Planets</Link></li>
             <li><Link href="/explore/nebulae" className="hover:text-gray-300">Nebulae</Link></li>
             <li><Link href="/explore/constellations" className="hover:text-gray-300">Constellations</Link></li>
+            <li><Link href="/explore/AlienCreaturesSection" className="hover:text-gray-300">Alien Creatures</Link></li>
+            <li><Link href="/explore/fire-planet" className="hover:text-gray-300">Fire Planet</Link></li>
           </ul>
         </div>
 
