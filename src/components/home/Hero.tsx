@@ -1,127 +1,164 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-import Link from "next/link";
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Stars } from '@react-three/drei';
+import { useMemo, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import * as THREE from 'three';
 
-export default function EarthSection() {
-  const mountRef = useRef<HTMLDivElement | null>(null);
+function BlackHole() {
+  const accretionDiskRef = useRef<THREE.Points>(null);
+  const glowRef = useRef<THREE.Mesh>(null);
 
-  useEffect(() => {
-    const mount = mountRef.current;
-    if (!mount) return;
+  // Generate particles for the accretion disk
+  const particles = useMemo(() => {
+    const count = 8000;
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
 
-    // Scene
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#000000");
+    const colorInner = new THREE.Color('#ffffff'); // White hot near singularity
+    const colorMid = new THREE.Color('#FF8C00');   // Fiery orange in middle
+    const colorOuter = new THREE.Color('#4B0082'); // Deep purple/blue on edge
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      mount.clientWidth / mount.clientHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 4;
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(mount.clientWidth, mount.clientHeight);
-    mount.appendChild(renderer.domElement);
+      // Distribution: denser in the middle
+      const radius = 2.5 + Math.pow(Math.random(), 1.5) * 6; 
+      const angle = Math.random() * Math.PI * 2;
+      
+      // Elliptical distortion to simulate gravitational lensing/tilt
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      
+      // Vertical thickness (thicker further out, pinched near singularity)
+      const thickness = (radius - 2.5) * 0.1;
+      const y = (Math.random() - 0.5) * thickness;
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-    scene.add(ambientLight);
-    const pointLight = new THREE.PointLight(0xffffff, 1.2);
-    pointLight.position.set(10, 10, 10);
-    scene.add(pointLight);
+      positions[i3] = x;
+      positions[i3 + 1] = y;
+      positions[i3 + 2] = z;
 
-    // Earth
-    const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
-    const earthTexture = new THREE.TextureLoader().load("/earth.jpg");
-    const earthMaterial = new THREE.MeshStandardMaterial({ 
-      map: earthTexture,
-      roughness: 0.8,
-      metalness: 0.1
-    });
-    const earth = new THREE.Mesh(earthGeometry, earthMaterial);
-    scene.add(earth);
+      // Color based on distance from singularity
+      const mixRatio = (radius - 2.5) / 6;
+      const mixedColor = new THREE.Color();
+      
+      if (mixRatio < 0.3) {
+        mixedColor.copy(colorInner).lerp(colorMid, mixRatio / 0.3);
+      } else {
+        mixedColor.copy(colorMid).lerp(colorOuter, (mixRatio - 0.3) / 0.7);
+      }
 
-    // Atmosphere Glow
-    const atmosGeometry = new THREE.SphereGeometry(1.05, 64, 64);
-    const atmosMaterial = new THREE.MeshBasicMaterial({
-      color: "#4B92DB",
-      transparent: true,
-      opacity: 0.15,
-      side: THREE.BackSide,
-      blending: THREE.AdditiveBlending,
-    });
-    const atmos = new THREE.Mesh(atmosGeometry, atmosMaterial);
-    scene.add(atmos);
-
-    // Stars
-    const starsGeometry = new THREE.BufferGeometry();
-    const starCount = 10000;
-    const starPositions = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount * 3; i++) {
-      starPositions[i] = (Math.random() - 0.5) * 2000;
+      colors[i3] = mixedColor.r;
+      colors[i3 + 1] = mixedColor.g;
+      colors[i3 + 2] = mixedColor.b;
     }
-    starsGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(starPositions, 3)
-    );
-    const starsMaterial = new THREE.PointsMaterial({ 
-      color: 0xffffff, 
-      size: 0.7,
-      transparent: true,
-      opacity: 0.8 
-    });
-    const stars = new THREE.Points(starsGeometry, starsMaterial);
-    scene.add(stars);
 
-    // Animate
-    let angle = 0;
-    const animate = () => {
-      angle += 0.0005;
-      camera.position.x = Math.sin(angle) * 4;
-      camera.position.z = Math.cos(angle) * 4;
-      camera.lookAt(earth.position);
-
-      earth.rotation.y += 0.002;
-      stars.rotation.y += 0.0005;
-
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    };
-    animate();
-
-    // Resize
-    const handleResize = () => {
-      if (!mount) return;
-      camera.aspect = mount.clientWidth / mount.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(mount.clientWidth, mount.clientHeight);
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      mount.removeChild(renderer.domElement);
-    };
+    return { positions, colors };
   }, []);
 
+  useFrame((state, delta) => {
+    const time = state.clock.elapsedTime;
+    
+    if (accretionDiskRef.current) {
+      // Rotate the entire disk
+      accretionDiskRef.current.rotation.y += delta * 0.15;
+      accretionDiskRef.current.rotation.z = Math.sin(time * 0.2) * 0.05; // Subtle wobble
+    }
+    
+    if (glowRef.current) {
+      // Pulse the event horizon glow
+      const pulse = 1 + Math.sin(time * 2) * 0.05;
+      glowRef.current.scale.setScalar(pulse);
+    }
+  });
+
+  return (
+    <group rotation={[0.2, 0, 0.1]}>
+      {/* Event Horizon (Pure Black Sphere) */}
+      <mesh>
+        <sphereGeometry args={[2.2, 64, 64]} />
+        <meshBasicMaterial color="#000000" />
+      </mesh>
+
+      {/* Atmospheric Gravitational Glow */}
+      <mesh ref={glowRef}>
+        <sphereGeometry args={[2.6, 64, 64]} />
+        <meshBasicMaterial 
+          color="#FFaa00" 
+          transparent 
+          opacity={0.15} 
+          blending={THREE.AdditiveBlending}
+          side={THREE.BackSide}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* Accretion Disk (Particles) */}
+      <points ref={accretionDiskRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            array={particles.positions}
+            count={particles.positions.length / 3}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            array={particles.colors}
+            count={particles.colors.length / 3}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.06}
+          vertexColors
+          transparent
+          opacity={0.8}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
+      </points>
+      
+      {/* Core lighting */}
+      <pointLight position={[0, 0, 0]} intensity={2} color="#FFFFFF" distance={20} />
+      <pointLight position={[0, 2, 0]} intensity={1.5} color="#FF8C00" distance={15} />
+      <pointLight position={[0, -2, 0]} intensity={1.5} color="#FF8C00" distance={15} />
+    </group>
+  );
+}
+
+export default function HeroSection() {
   return (
     <section className="relative w-full h-screen overflow-hidden bg-black text-white">
-      {/* 3D Canvas Container */}
-      <div ref={mountRef} className="absolute inset-0 w-full h-full" />
+      
+      {/* 3D Canvas Background */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <Canvas camera={{ position: [0, 2, 12], fov: 60 }}>
+          <fog attach="fog" args={['#000000', 10, 30]} />
+          <ambientLight intensity={0.1} />
+          <Stars radius={150} depth={50} count={6000} factor={4} saturation={0} fade speed={1} />
+          
+          <OrbitControls 
+            enableZoom={false} 
+            enablePan={false}
+            autoRotate 
+            autoRotateSpeed={0.5} 
+            maxPolarAngle={Math.PI / 1.5}
+            minPolarAngle={Math.PI / 3}
+          />
+          
+          <BlackHole />
+        </Canvas>
+      </div>
       
       {/* Dark Vignette Overlay for Text Contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/90 pointer-events-none z-10" />
       
       {/* Content wrapper */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 px-4">
         <motion.div
            initial={{ opacity: 0, scale: 0.95 }}
            animate={{ opacity: 1, scale: 1 }}
@@ -166,7 +203,7 @@ export default function EarthSection() {
 
       {/* Scroll Indicator */}
       <motion.div 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gray-500 flex flex-col items-center gap-2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gray-500 flex flex-col items-center gap-2 z-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
