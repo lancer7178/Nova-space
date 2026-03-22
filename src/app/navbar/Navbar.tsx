@@ -43,6 +43,11 @@ export default function Navbar() {
                 <Link href="/explore/constellations" onClick={closeExplore} className="block hover:text-gray-300">Constellations</Link>
                 <Link href="/explore/AlienCreaturesSection" onClick={closeExplore} className="block hover:text-gray-300">Alien Creatures</Link>
                 <Link href="/explore/fire-planet" onClick={closeExplore} className="block hover:text-gray-300">Fire Planet</Link>
+                <Link href="/explore/asteroids" onClick={closeExplore} className="block hover:text-gray-300">Asteroids</Link>
+                <Link href="/explore/solar-system" onClick={closeExplore} className="block hover:text-gray-300">Solar System</Link>
+                <Link href="/explore/supernova" onClick={closeExplore} className="block hover:text-gray-300">Supernova</Link>
+                <Link href="/explore/wormhole" onClick={closeExplore} className="block hover:text-gray-300">Wormhole</Link>
+                <Link href="/explore/comets" onClick={closeExplore} className="block hover:text-gray-300">Comets</Link>
               </div>
             )}
           </div>
@@ -74,6 +79,11 @@ export default function Navbar() {
                 <Link href="/explore/constellations" className="block hover:text-gray-300">Constellations</Link>
                 <Link href="/explore/AlienCreaturesSection" className="block hover:text-gray-300">Alien Creatures</Link>
                 <Link href="/explore/fire-planet" className="block hover:text-gray-300">Fire Planet</Link>
+                <Link href="/explore/asteroids" className="block hover:text-gray-300">Asteroids</Link>
+                <Link href="/explore/solar-system" className="block hover:text-gray-300">Solar System</Link>
+                <Link href="/explore/supernova" className="block hover:text-gray-300">Supernova</Link>
+                <Link href="/explore/wormhole" className="block hover:text-gray-300">Wormhole</Link>
+                <Link href="/explore/comets" className="block hover:text-gray-300">Comets</Link>
 
               </div>
             </details>
