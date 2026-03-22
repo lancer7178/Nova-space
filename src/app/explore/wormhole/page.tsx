@@ -36,7 +36,7 @@ function WormholeTunnel() {
     return { positions, colors };
   }, []);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (ref.current) {
       ref.current.rotation.z += 0.005;
       const posAttr = ref.current.geometry.attributes.position;
