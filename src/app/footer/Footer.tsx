@@ -111,19 +111,20 @@ export default function Footer() {
       {/* Copyright Line */}
       <div className="container mx-auto max-w-7xl px-6 mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 relative z-10">
         <p className="flex items-center gap-1">
-          &copy; {new Date().getFullYear()} Nova Space. Built with Next.js &
-          Three.js
+          &copy; {new Date().getFullYear()} Abdulatif Selem - Nova Space. Built
+          with Next.js & Three.js
         </p>
-        <div className="flex gap-6 mt-4 md:mt-0 font-medium">
-          <Link href="#" className="hover:text-gray-300 transition-colors">
-            Privacy Policy
-          </Link>
-          <Link href="#" className="hover:text-gray-300 transition-colors">
-            Terms of Service
-          </Link>
-          <Link href="#" className="hover:text-gray-300 transition-colors">
-            Security
-          </Link>
+        <div className="flex flex-col items-end gap-2 mt-4 md:mt-0">
+          <p className="text-xs text-gray-400 italic max-w-sm text-right leading-relaxed">
+            &quot;In the vast tapestry of the cosmos, we are but stardust
+            awakened to wonder. Each light-year tells a story of creation, and
+            every nebula whispers secrets of infinite worlds waiting to be
+            discovered.&quot;
+          </p>
+          <p className="text-xs text-gray-500">— Nova Space</p>
+          <p className="text-xs text-gray-600 font-light">
+            Designed to amaze & inspire Someone
+          </p>
         </div>
       </div>
     </footer>
