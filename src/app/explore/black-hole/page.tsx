@@ -9,7 +9,7 @@ export default function BlackHolePage() {
     <div className="relative h-screen w-full bg-black overflow-hidden">
       {/* النص في الأعلى */}
 
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-12 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
         <motion.h2
           className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}

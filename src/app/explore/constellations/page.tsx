@@ -15,7 +15,7 @@ const Constellation = () => {
       [6, 3, -2],
       [8, 0, 1],
     ],
-    []
+    [],
   );
 
   return (
@@ -47,7 +47,7 @@ const Constellation = () => {
 export default function ConstellationsSection() {
   return (
     <section className="w-full min-h-screen bg-black text-white relative z-10 overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-12 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
         <motion.h2
           className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Stars, Cloud } from '@react-three/drei';
-import { useRef } from 'react';
-import { motion } from 'framer-motion';
-import * as THREE from 'three';
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Stars, Cloud } from "@react-three/drei";
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import * as THREE from "three";
 
 type PlanetProps = {
   size: number;
@@ -33,14 +33,14 @@ export default function FrozenPlanetsSection() {
   return (
     <section className="relative w-full h-screen bg-[#0a0e11] text-white overflow-hidden">
       {/* عنوان متحرك في الأعلى */}
-         <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-12 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
         <motion.h2
           className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-        Frozen Horror Planets
+          Frozen Horror Planets
         </motion.h2>
       </div>
 
@@ -50,11 +50,15 @@ export default function FrozenPlanetsSection() {
         camera={{ position: [0, 8, 25], fov: 60 }}
       >
         {/* ضباب جليدي */}
-        <fog attach="fog" args={['#0a0e11', 10, 40]} />
+        <fog attach="fog" args={["#0a0e11", 10, 40]} />
 
         {/* إضاءة */}
         <ambientLight intensity={0.3} />
-        <directionalLight position={[5, 10, 5]} intensity={1.5} color="#bbddff" />
+        <directionalLight
+          position={[5, 10, 5]}
+          intensity={1.5}
+          color="#bbddff"
+        />
 
         {/* نجوم الخلفية */}
         <Stars radius={100} depth={50} count={1500} factor={4} fade />

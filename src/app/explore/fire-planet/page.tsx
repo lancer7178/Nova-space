@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import * as THREE from 'three'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Stars, Sparkles } from '@react-three/drei'
-import { Suspense, useRef } from 'react'
-import { motion } from 'framer-motion'
+import * as THREE from "three";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars, Sparkles } from "@react-three/drei";
+import { Suspense, useRef } from "react";
+import { motion } from "framer-motion";
 
 export default function FirePlanetPage() {
   return (
     <div className="bg-black min-h-screen flex flex-col overflow-x-hidden">
       {/* نص فوق */}
-      <header className="relative z-20 w-full py-6 flex justify-center px-4 max-w-full box-border">
+      <header className="relative z-20 w-full py-6 pt-20 md:pt-6 flex justify-center px-4 max-w-full box-border">
         <motion.h2
           className="text-4xl md:text-5xl font-extrabold text-center text-white drop-shadow-lg max-w-4xl"
           initial={{ opacity: 0, y: -30 }}
@@ -25,7 +25,7 @@ export default function FirePlanetPage() {
       <main className="flex-grow relative z-10 w-full h-screen">
         <Canvas
           camera={{ position: [0, 2, 8], fov: 60 }}
-          style={{ width: '100vw', height: '100vh', display: 'block' }}
+          style={{ width: "100vw", height: "100vh", display: "block" }}
         >
           <ambientLight intensity={0.3} />
           <pointLight position={[5, 5, 5]} intensity={3} color="orange" />
@@ -41,15 +41,14 @@ export default function FirePlanetPage() {
   );
 }
 
-
 function FirePlanet() {
-  const groupRef = useRef<THREE.Group>(null)
+  const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock }) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.1
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.1;
     }
-  })
+  });
 
   return (
     <group ref={groupRef}>
@@ -80,5 +79,5 @@ function FirePlanet() {
         <meshBasicMaterial color="orange" transparent opacity={0.7} />
       </mesh>
     </group>
-  )
+  );
 }

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
-import { useMemo, useRef } from 'react';
-import { motion } from 'framer-motion';
-import * as THREE from 'three';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
+import { useMemo, useRef } from "react";
+import { motion } from "framer-motion";
+import * as THREE from "three";
 
 function WormholeTunnel() {
   const ref = useRef<THREE.Points>(null);
@@ -14,8 +14,8 @@ function WormholeTunnel() {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
 
-    const colorA = new THREE.Color('#7B2FBE');
-    const colorB = new THREE.Color('#00D4FF');
+    const colorA = new THREE.Color("#7B2FBE");
+    const colorB = new THREE.Color("#00D4FF");
 
     for (let i = 0; i < count; i++) {
       const t = (i / count) * 40 - 20;
@@ -134,7 +134,7 @@ function CenterGlow() {
 export default function WormholeSection() {
   return (
     <section className="relative w-full h-screen bg-black text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-12 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
         <motion.h2
           className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}
@@ -149,7 +149,8 @@ export default function WormholeSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          A shortcut through spacetime — spiraling through a tunnel that connects distant corners of the universe
+          A shortcut through spacetime — spiraling through a tunnel that
+          connects distant corners of the universe
         </motion.p>
       </div>
 
@@ -158,8 +159,18 @@ export default function WormholeSection() {
         camera={{ position: [0, 0, 8], fov: 70 }}
       >
         <ambientLight intensity={0.1} />
-        <pointLight position={[0, 0, -20]} intensity={3} color="#00D4FF" distance={50} />
-        <pointLight position={[0, 0, 0]} intensity={1} color="#9B59B6" distance={30} />
+        <pointLight
+          position={[0, 0, -20]}
+          intensity={3}
+          color="#00D4FF"
+          distance={50}
+        />
+        <pointLight
+          position={[0, 0, 0]}
+          intensity={1}
+          color="#9B59B6"
+          distance={30}
+        />
         <Stars radius={200} depth={80} count={2000} factor={4} fade />
         <OrbitControls enableZoom={true} />
         <WormholeTunnel />

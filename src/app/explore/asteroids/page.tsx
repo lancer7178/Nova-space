@@ -1,12 +1,17 @@
-'use client';
+"use client";
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
-import { useMemo, useRef } from 'react';
-import { motion } from 'framer-motion';
-import * as THREE from 'three';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
+import { useMemo, useRef } from "react";
+import { motion } from "framer-motion";
+import * as THREE from "three";
 
-function Asteroid({ position, size, speed, rotationAxis }: {
+function Asteroid({
+  position,
+  size,
+  speed,
+  rotationAxis,
+}: {
   position: [number, number, number];
   size: number;
   speed: number;
@@ -25,7 +30,8 @@ function Asteroid({ position, size, speed, rotationAxis }: {
       orbitRef.current += delta * speed * 0.3;
       meshRef.current.position.x = Math.cos(orbitRef.current) * orbitRadius;
       meshRef.current.position.z = Math.sin(orbitRef.current) * orbitRadius;
-      meshRef.current.position.y = position[1] + Math.sin(orbitRef.current * 2) * 0.5;
+      meshRef.current.position.y =
+        position[1] + Math.sin(orbitRef.current * 2) * 0.5;
     }
   });
 
@@ -46,7 +52,11 @@ function Asteroid({ position, size, speed, rotationAxis }: {
   return (
     <mesh ref={meshRef} position={position} geometry={geometry}>
       <meshStandardMaterial
-        color={new THREE.Color().setHSL(0.08 + Math.random() * 0.05, 0.3, 0.25 + Math.random() * 0.15)}
+        color={new THREE.Color().setHSL(
+          0.08 + Math.random() * 0.05,
+          0.3,
+          0.25 + Math.random() * 0.15,
+        )}
         roughness={0.9}
         metalness={0.1}
       />
@@ -68,11 +78,11 @@ function AsteroidBelt() {
         ] as [number, number, number],
         size: 0.15 + Math.random() * 0.5,
         speed: 0.3 + Math.random() * 0.8,
-        rotationAxis: [
-          Math.random(),
-          Math.random(),
-          Math.random(),
-        ] as [number, number, number],
+        rotationAxis: [Math.random(), Math.random(), Math.random()] as [
+          number,
+          number,
+          number,
+        ],
       });
     }
     return items;
@@ -98,7 +108,8 @@ function Dust() {
       const radius = 5 + Math.random() * 10;
       positions[i * 3] = Math.cos(angle) * radius + (Math.random() - 0.5) * 2;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 4;
-      positions[i * 3 + 2] = Math.sin(angle) * radius + (Math.random() - 0.5) * 2;
+      positions[i * 3 + 2] =
+        Math.sin(angle) * radius + (Math.random() - 0.5) * 2;
     }
     return positions;
   }, []);
@@ -127,7 +138,7 @@ function Dust() {
 export default function AsteroidsSection() {
   return (
     <section className="relative w-full h-screen bg-black text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-12 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
         <motion.h2
           className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}
@@ -142,7 +153,8 @@ export default function AsteroidsSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          Navigate through a field of tumbling space rocks orbiting between Mars and Jupiter
+          Navigate through a field of tumbling space rocks orbiting between Mars
+          and Jupiter
         </motion.p>
       </div>
 

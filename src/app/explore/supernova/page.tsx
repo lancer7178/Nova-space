@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
-import { useMemo, useRef } from 'react';
-import { motion } from 'framer-motion';
-import * as THREE from 'three';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
+import { useMemo, useRef } from "react";
+import { motion } from "framer-motion";
+import * as THREE from "three";
 
 function SupernovaCore() {
   const coreRef = useRef<THREE.Mesh>(null);
@@ -19,7 +19,8 @@ function SupernovaCore() {
     if (glowRef.current) {
       const glow = 1.5 + Math.sin(t * 2) * 0.3;
       glowRef.current.scale.setScalar(glow);
-      (glowRef.current.material as THREE.MeshBasicMaterial).opacity = 0.12 + Math.sin(t * 4) * 0.05;
+      (glowRef.current.material as THREE.MeshBasicMaterial).opacity =
+        0.12 + Math.sin(t * 4) * 0.05;
     }
   });
 
@@ -33,13 +34,29 @@ function SupernovaCore() {
         <sphereGeometry args={[1.5, 32, 32]} />
         <meshBasicMaterial color="#FFE066" transparent opacity={0.15} />
       </mesh>
-      <pointLight position={[0, 0, 0]} intensity={5} color="#FFD700" distance={40} />
-      <pointLight position={[0, 0, 0]} intensity={2} color="#FF4500" distance={60} />
+      <pointLight
+        position={[0, 0, 0]}
+        intensity={5}
+        color="#FFD700"
+        distance={40}
+      />
+      <pointLight
+        position={[0, 0, 0]}
+        intensity={2}
+        color="#FF4500"
+        distance={60}
+      />
     </group>
   );
 }
 
-function ExplosionShell({ radius, count, color, speed, sizeVal }: {
+function ExplosionShell({
+  radius,
+  count,
+  color,
+  speed,
+  sizeVal,
+}: {
   radius: number;
   count: number;
   color: string;
@@ -84,7 +101,7 @@ function ExplosionShell({ radius, count, color, speed, sizeVal }: {
             i,
             r * Math.sin(phi) * Math.cos(theta),
             r * Math.sin(phi) * Math.sin(theta),
-            r * Math.cos(phi)
+            r * Math.cos(phi),
           );
         } else {
           posAttr.setXYZ(i, x, y, z);
@@ -120,7 +137,7 @@ function ExplosionShell({ radius, count, color, speed, sizeVal }: {
 export default function SupernovaSection() {
   return (
     <section className="relative w-full h-screen bg-black text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-12 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
         <motion.h2
           className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}
@@ -135,7 +152,8 @@ export default function SupernovaSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          Witness the violent death of a massive star — an explosion brighter than entire galaxies
+          Witness the violent death of a massive star — an explosion brighter
+          than entire galaxies
         </motion.p>
       </div>
 
@@ -147,11 +165,41 @@ export default function SupernovaSection() {
         <Stars radius={200} depth={80} count={3000} factor={4} fade />
         <OrbitControls enableZoom={true} />
         <SupernovaCore />
-        <ExplosionShell radius={2} count={2000} color="#FFFFFF" speed={0.08} sizeVal={0.08} />
-        <ExplosionShell radius={3.5} count={1500} color="#FFD700" speed={0.06} sizeVal={0.1} />
-        <ExplosionShell radius={5.5} count={1200} color="#FF8C00" speed={0.04} sizeVal={0.12} />
-        <ExplosionShell radius={8} count={800} color="#FF4500" speed={0.03} sizeVal={0.15} />
-        <ExplosionShell radius={10} count={500} color="#8B0000" speed={0.02} sizeVal={0.18} />
+        <ExplosionShell
+          radius={2}
+          count={2000}
+          color="#FFFFFF"
+          speed={0.08}
+          sizeVal={0.08}
+        />
+        <ExplosionShell
+          radius={3.5}
+          count={1500}
+          color="#FFD700"
+          speed={0.06}
+          sizeVal={0.1}
+        />
+        <ExplosionShell
+          radius={5.5}
+          count={1200}
+          color="#FF8C00"
+          speed={0.04}
+          sizeVal={0.12}
+        />
+        <ExplosionShell
+          radius={8}
+          count={800}
+          color="#FF4500"
+          speed={0.03}
+          sizeVal={0.15}
+        />
+        <ExplosionShell
+          radius={10}
+          count={500}
+          color="#8B0000"
+          speed={0.02}
+          sizeVal={0.18}
+        />
       </Canvas>
     </section>
   );

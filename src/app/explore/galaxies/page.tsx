@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
-import { useMemo, useRef } from 'react';
-import { motion } from 'framer-motion';
-import * as THREE from 'three';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
+import { useMemo, useRef } from "react";
+import { motion } from "framer-motion";
+import * as THREE from "three";
 
 function Galaxy() {
   const galaxyRef = useRef<THREE.Points>(null);
@@ -14,8 +14,8 @@ function Galaxy() {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
 
-    const colorInside = new THREE.Color('#ffffff');
-    const colorOutside = new THREE.Color('#00aaff');
+    const colorInside = new THREE.Color("#ffffff");
+    const colorOutside = new THREE.Color("#00aaff");
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
@@ -81,14 +81,14 @@ export default function GalaxiesSection() {
   return (
     <section className="relative w-full h-screen bg-black text-white overflow-hidden">
       {/* العنوان */}
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-12 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
         <motion.h2
           className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-        Galaxies Beyond
+          Galaxies Beyond
         </motion.h2>
       </div>
       {/* مشهد المجرة */}

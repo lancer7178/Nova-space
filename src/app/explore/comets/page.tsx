@@ -1,12 +1,17 @@
-'use client';
+"use client";
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
-import { useMemo, useRef } from 'react';
-import { motion } from 'framer-motion';
-import * as THREE from 'three';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
+import { useMemo, useRef } from "react";
+import { motion } from "framer-motion";
+import * as THREE from "three";
 
-function CometHead({ startPos, direction, speed, color }: {
+function CometHead({
+  startPos,
+  direction,
+  speed,
+  color,
+}: {
   startPos: [number, number, number];
   direction: [number, number, number];
   speed: number;
@@ -16,7 +21,7 @@ function CometHead({ startPos, direction, speed, color }: {
   const glowRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
-    const t = (state.clock.elapsedTime * speed) % 60 - 30;
+    const t = ((state.clock.elapsedTime * speed) % 60) - 30;
     if (meshRef.current) {
       meshRef.current.position.x = startPos[0] + direction[0] * t;
       meshRef.current.position.y = startPos[1] + direction[1] * t;
@@ -43,7 +48,12 @@ function CometHead({ startPos, direction, speed, color }: {
   );
 }
 
-function CometTail({ startPos, direction, speed, color }: {
+function CometTail({
+  startPos,
+  direction,
+  speed,
+  color,
+}: {
   startPos: [number, number, number];
   direction: [number, number, number];
   speed: number;
@@ -56,7 +66,7 @@ function CometTail({ startPos, direction, speed, color }: {
 
   useFrame((state) => {
     if (!ref.current) return;
-    const t = (state.clock.elapsedTime * speed) % 60 - 30;
+    const t = ((state.clock.elapsedTime * speed) % 60) - 30;
 
     const headX = startPos[0] + direction[0] * t;
     const headY = startPos[1] + direction[1] * t;
@@ -67,9 +77,15 @@ function CometTail({ startPos, direction, speed, color }: {
       const trailFactor = (i / count) * 5;
       posAttr.setXYZ(
         i,
-        headX - direction[0] * trailFactor + (Math.random() - 0.5) * trailFactor * 0.3,
-        headY - direction[1] * trailFactor + (Math.random() - 0.5) * trailFactor * 0.3,
-        headZ - direction[2] * trailFactor + (Math.random() - 0.5) * trailFactor * 0.3
+        headX -
+          direction[0] * trailFactor +
+          (Math.random() - 0.5) * trailFactor * 0.3,
+        headY -
+          direction[1] * trailFactor +
+          (Math.random() - 0.5) * trailFactor * 0.3,
+        headZ -
+          direction[2] * trailFactor +
+          (Math.random() - 0.5) * trailFactor * 0.3,
       );
     }
     posAttr.needsUpdate = true;
@@ -112,12 +128,42 @@ function Comet(props: {
 }
 
 const COMETS = [
-  { startPos: [-15, 8, -5] as [number, number, number], direction: [1, -0.3, 0.2] as [number, number, number], speed: 2.5, color: '#88CCFF' },
-  { startPos: [20, -3, -8] as [number, number, number], direction: [-1, 0.15, 0.3] as [number, number, number], speed: 1.8, color: '#99DDFF' },
-  { startPos: [-10, -6, 5] as [number, number, number], direction: [0.8, 0.5, -0.2] as [number, number, number], speed: 3.0, color: '#AAEEFF' },
-  { startPos: [5, 15, -10] as [number, number, number], direction: [-0.3, -1, 0.4] as [number, number, number], speed: 2.0, color: '#77BBEE' },
-  { startPos: [-20, 2, 10] as [number, number, number], direction: [1, -0.1, -0.5] as [number, number, number], speed: 1.5, color: '#66AADD' },
-  { startPos: [12, 10, -15] as [number, number, number], direction: [-0.6, -0.7, 0.3] as [number, number, number], speed: 2.2, color: '#BBDDFF' },
+  {
+    startPos: [-15, 8, -5] as [number, number, number],
+    direction: [1, -0.3, 0.2] as [number, number, number],
+    speed: 2.5,
+    color: "#88CCFF",
+  },
+  {
+    startPos: [20, -3, -8] as [number, number, number],
+    direction: [-1, 0.15, 0.3] as [number, number, number],
+    speed: 1.8,
+    color: "#99DDFF",
+  },
+  {
+    startPos: [-10, -6, 5] as [number, number, number],
+    direction: [0.8, 0.5, -0.2] as [number, number, number],
+    speed: 3.0,
+    color: "#AAEEFF",
+  },
+  {
+    startPos: [5, 15, -10] as [number, number, number],
+    direction: [-0.3, -1, 0.4] as [number, number, number],
+    speed: 2.0,
+    color: "#77BBEE",
+  },
+  {
+    startPos: [-20, 2, 10] as [number, number, number],
+    direction: [1, -0.1, -0.5] as [number, number, number],
+    speed: 1.5,
+    color: "#66AADD",
+  },
+  {
+    startPos: [12, 10, -15] as [number, number, number],
+    direction: [-0.6, -0.7, 0.3] as [number, number, number],
+    speed: 2.2,
+    color: "#BBDDFF",
+  },
 ];
 
 function IceDust() {
@@ -158,7 +204,7 @@ function IceDust() {
 export default function CometsSection() {
   return (
     <section className="relative w-full h-screen bg-black text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-12 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
         <motion.h2
           className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}
@@ -173,7 +219,8 @@ export default function CometsSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          Frozen wanderers blazing across the sky — icy bodies trailing brilliant tails of gas and dust
+          Frozen wanderers blazing across the sky — icy bodies trailing
+          brilliant tails of gas and dust
         </motion.p>
       </div>
 
