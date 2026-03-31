@@ -16,6 +16,12 @@ const EXPLORE_LINKS = [
   { href: "/explore/supernova", label: "Supernova" },
   { href: "/explore/wormhole", label: "Wormhole" },
   { href: "/explore/comets", label: "Comets" },
+  { href: "/explore/dark-matter", label: "Dark Matter" },
+  { href: "/explore/mystical-portals", label: "Mystical Portals" },
+  { href: "/explore/space-anomalies", label: "Space Anomalies" },
+  { href: "/explore/cosmic-dust", label: "Cosmic Dust" },
+  { href: "/explore/aurora-3d", label: "Aurora 3D" },
+  { href: "/explore/time-vortex", label: "Time Vortex" },
 ];
 
 export default function Footer() {

@@ -19,6 +19,12 @@ const EXPLORE_LINKS = [
   { href: "/explore/supernova", label: "Supernova" },
   { href: "/explore/wormhole", label: "Wormhole" },
   { href: "/explore/comets", label: "Comets" },
+  { href: "/explore/dark-matter", label: "Dark Matter" },
+  { href: "/explore/mystical-portals", label: "Mystical Portals" },
+  { href: "/explore/space-anomalies", label: "Space Anomalies" },
+  { href: "/explore/cosmic-dust", label: "Cosmic Dust" },
+  { href: "/explore/aurora-3d", label: "Aurora 3D" },
+  { href: "/explore/time-vortex", label: "Time Vortex" },
 ];
 
 export default function Navbar() {
@@ -110,10 +116,14 @@ export default function Navbar() {
                 >
                   {/* Subtle inner top highlight */}
                   <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                  
+
                   <div className="mb-4 px-3 flex items-center justify-between">
-                    <span className="text-xs font-bold text-gray-500 tracking-widest uppercase">Select Destination</span>
-                    <span className="text-xs text-gray-600 bg-white/5 px-2 py-1 rounded-md">14 Topics Active</span>
+                    <span className="text-xs font-bold text-gray-500 tracking-widest uppercase">
+                      Select Destination
+                    </span>
+                    <span className="text-xs text-gray-600 bg-white/5 px-2 py-1 rounded-md">
+                      20 Topics Active
+                    </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-x-6 gap-y-2">
@@ -124,10 +134,13 @@ export default function Navbar() {
                         onClick={() => setExploreDropdown(false)}
                         className="group/link flex items-center justify-between hover:bg-white-[0.04] bg-transparent border border-transparent hover:border-white/5 p-3 rounded-2xl transition-all duration-300"
                       >
-                       <span className="text-gray-400 group-hover/link:text-white transition-colors">
+                        <span className="text-gray-400 group-hover/link:text-white transition-colors">
                           {link.label}
-                       </span>
-                       <ArrowRight size={14} className="text-gray-600 -translate-x-2 opacity-0 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all duration-300 group-hover/link:text-white" />
+                        </span>
+                        <ArrowRight
+                          size={14}
+                          className="text-gray-600 -translate-x-2 opacity-0 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all duration-300 group-hover/link:text-white"
+                        />
                       </Link>
                     ))}
                   </div>
