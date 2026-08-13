@@ -125,9 +125,7 @@ function Dust() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          array={particles}
-          count={particles.length / 3}
-          itemSize={3}
+          args={[particles, 3]}
         />
       </bufferGeometry>
       <pointsMaterial size={0.03} color="#8B7355" transparent opacity={0.6} />

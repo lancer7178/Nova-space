@@ -1,6 +1,6 @@
-import Footer from "./footer/Footer";
 import "./globals.css";
-import Navbar from "./navbar/Navbar";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 export default function RootLayout({
   children,
@@ -8,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-<html data-theme="mytheme">
+    <html lang="en" data-theme="mytheme">
       <body>
         <Navbar />
         {/* Main content of the page */}

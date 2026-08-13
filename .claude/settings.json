@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --input-type=module -e \"import cwv from 'eslint-config-next/core-web-vitals'; import ts from 'eslint-config-next/typescript'; console.log\\('core-web-vitals isArray:', Array.isArray\\(cwv\\), 'len:', cwv?.length\\); console.log\\('typescript isArray:', Array.isArray\\(ts\\), 'len:', ts?.length\\);\")"
+    ]
+  }
+}

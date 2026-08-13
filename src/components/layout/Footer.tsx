@@ -9,7 +9,7 @@ const EXPLORE_LINKS = [
   { href: "/explore/frozen-planets", label: "Frozen Planets" },
   { href: "/explore/nebulae", label: "Nebulae" },
   { href: "/explore/constellations", label: "Constellations" },
-  { href: "/explore/AlienCreaturesSection", label: "Alien Creatures" },
+  { href: "/explore/alien-creatures", label: "Alien Creatures" },
   { href: "/explore/fire-planet", label: "Fire Planet" },
   { href: "/explore/asteroids", label: "Asteroids" },
   { href: "/explore/solar-system", label: "Solar System" },

@@ -55,15 +55,11 @@ function WormholeTunnel() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          array={particles.positions}
-          count={particles.positions.length / 3}
-          itemSize={3}
+          args={[particles.positions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
-          array={particles.colors}
-          count={particles.colors.length / 3}
-          itemSize={3}
+          args={[particles.colors, 3]}
         />
       </bufferGeometry>
       <pointsMaterial
