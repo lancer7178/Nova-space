@@ -2,34 +2,11 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { Suspense } from "react";
-import { motion } from "framer-motion";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 export default function BlackHolePage() {
   return (
-    <div className="relative h-screen w-full bg-black overflow-hidden">
-      {/* النص في الأعلى */}
-
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Black Hole
-        </motion.h2>
-
-        <motion.p
-          className="mt-6 max-w-2xl text-center text-lg md:text-xl text-gray-300"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-        >
-          A mysterious space phenomenon{" "}
-        </motion.p>
-      </div>
-
-      {/* 3D Canvas */}
+    <DestinationFrame id="black-hole">
       <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
         <ambientLight intensity={0.4} />
         <pointLight position={[10, 10, 10]} intensity={2} />
@@ -46,7 +23,7 @@ export default function BlackHolePage() {
           fade
         />
       </Canvas>
-    </div>
+    </DestinationFrame>
   );
 }
 

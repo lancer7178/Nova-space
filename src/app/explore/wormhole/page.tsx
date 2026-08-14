@@ -3,8 +3,8 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useMemo, useRef } from "react";
-import { motion } from "framer-motion";
 import * as THREE from "three";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 function WormholeTunnel() {
   const ref = useRef<THREE.Points>(null);
@@ -129,27 +129,7 @@ function CenterGlow() {
 
 export default function WormholeSection() {
   return (
-    <section className="relative w-full h-screen bg-black text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Wormhole
-        </motion.h2>
-        <motion.p
-          className="mt-4 text-lg md:text-xl text-gray-300 text-center max-w-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1 }}
-        >
-          A shortcut through spacetime — spiraling through a tunnel that
-          connects distant corners of the universe
-        </motion.p>
-      </div>
-
+    <DestinationFrame id="wormhole">
       <Canvas
         className="absolute top-0 left-0 w-full h-full"
         camera={{ position: [0, 0, 8], fov: 70 }}
@@ -173,6 +153,6 @@ export default function WormholeSection() {
         <WormholeRings />
         <CenterGlow />
       </Canvas>
-    </section>
+    </DestinationFrame>
   );
 }

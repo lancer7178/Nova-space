@@ -3,7 +3,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Stars, OrbitControls, Cloud } from "@react-three/drei";
-import { motion } from "framer-motion";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const Nebula = () => (
   <>
@@ -30,19 +30,8 @@ const Nebula = () => (
 
 export default function NebulaeSection() {
   return (
-    <section className="w-full min-h-screen bg-black text-white relative z-10">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Nebulae{" "}
-        </motion.h2>
-      </div>
-
-      <div className="w-full h-[100vh]">
+    <DestinationFrame id="nebulae">
+      <div className="w-full h-full">
         <Canvas
           camera={{ position: [0, 0, 25], fov: 50 }}
           style={{ background: "#000" }}
@@ -62,6 +51,6 @@ export default function NebulaeSection() {
           <Nebula />
         </Canvas>
       </div>
-    </section>
+    </DestinationFrame>
   );
 }

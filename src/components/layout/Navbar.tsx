@@ -90,6 +90,7 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center gap-2 text-sm font-medium relative">
           <NavLink href="/">Home</NavLink>
+          <NavLink href="/explore">Universe</NavLink>
 
           {/* Explore Dropdown (Mega Menu) */}
           <div
@@ -178,6 +179,13 @@ export default function Navbar() {
                 className="text-lg text-gray-300 hover:text-white"
               >
                 Home
+              </Link>
+              <Link
+                href="/explore"
+                onClick={() => setMenuOpen(false)}
+                className="text-lg text-gray-300 hover:text-white"
+              >
+                Universe
               </Link>
 
               <div className="space-y-4">
