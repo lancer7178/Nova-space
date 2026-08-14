@@ -2,9 +2,9 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
-import { motion } from "framer-motion";
 import * as THREE from "three";
 import { useRef, useEffect, useState } from "react";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const AuroraWaves = () => {
   const groupRef = useRef<THREE.Group>(null);
@@ -147,8 +147,8 @@ const ParticleField = () => {
 
 export default function Aurora3DSection() {
   return (
-    <section className="w-full min-h-screen bg-black text-white relative z-10 overflow-hidden">
-      <div className="w-full h-[100vh]">
+    <DestinationFrame id="aurora-3d">
+      <div className="w-full h-full">
         <Canvas camera={{ position: [0, 10, 30], fov: 55 }} shadows>
           <color attach="background" args={["#001a33"]} />
           <AuroraWaves />
@@ -175,43 +175,6 @@ export default function Aurora3DSection() {
           <OrbitControls autoRotate autoRotateSpeed={0.3} />
         </Canvas>
       </div>
-
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-20 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Aurora Borealis 3D
-        </motion.h2>
-        <motion.p
-          className="text-center text-blue-200 text-sm md:text-base max-w-2xl mt-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
-          Witness the mesmerizing dance of polar lights across the cosmos.
-          Interactive aurora waves respond to your exploration.
-        </motion.p>
-      </div>
-
-      <motion.div
-        className="absolute bottom-10 right-10 bg-black/40 border border-cyan-500/50 rounded-lg p-4 backdrop-blur-sm pointer-events-auto z-30"
-        animate={{
-          boxShadow: [
-            "0 0 10px rgba(0,255,136,0.3)",
-            "0 0 20px rgba(0,217,255,0.5)",
-            "0 0 10px rgba(0,255,136,0.3)",
-          ],
-        }}
-        transition={{ duration: 3, repeat: Infinity }}
-      >
-        <p className="text-xs text-cyan-300">Aurora Activity Level: High</p>
-        <p className="text-xs text-blue-300 mt-1">
-          Rotation Speed: Interactive
-        </p>
-      </motion.div>
-    </section>
+    </DestinationFrame>
   );
 }

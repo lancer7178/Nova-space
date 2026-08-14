@@ -2,9 +2,9 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, Points, PointMaterial } from "@react-three/drei";
-import { motion } from "framer-motion";
 import * as THREE from "three";
 import { useRef, useMemo, useState } from "react";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const DarkMatterParticles = () => {
   const pointsRef = useRef<THREE.Points>(null);
@@ -131,8 +131,8 @@ const GeometricShapes = () => {
 
 export default function DarkMatterSection() {
   return (
-    <section className="w-full min-h-screen bg-black text-white relative z-10 overflow-hidden">
-      <div className="w-full h-[100vh]">
+    <DestinationFrame id="dark-matter">
+      <div className="w-full h-full">
         <Canvas camera={{ position: [0, 0, 15], fov: 50 }} shadows>
           <color attach="background" args={["#0a0014"]} />
           <DarkMatterParticles />
@@ -154,37 +154,6 @@ export default function DarkMatterSection() {
           <OrbitControls autoRotate autoRotateSpeed={0.5} />
         </Canvas>
       </div>
-
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-20 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Dark Matter & Black Energy
-        </motion.h2>
-        <motion.p
-          className="text-center text-purple-200 text-sm md:text-base max-w-2xl mt-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
-          Explore the invisible forces that bind and expand the universe.
-          Discover the mysteries of dark matter and the enigmatic dark energy
-          driving cosmic acceleration.
-        </motion.p>
-      </div>
-
-      <motion.div
-        className="absolute bottom-10 left-0 right-0 flex justify-center gap-2 pointer-events-none z-20"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <div className="w-2 h-2 rounded-full bg-purple-500" />
-        <div className="w-2 h-2 rounded-full bg-purple-400" />
-        <div className="w-2 h-2 rounded-full bg-purple-500" />
-      </motion.div>
-    </section>
+    </DestinationFrame>
   );
 }

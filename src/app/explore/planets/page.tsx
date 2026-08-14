@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars, Html, SoftShadows } from "@react-three/drei";
-import { motion } from "framer-motion";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 type Planet = {
   name: string;
@@ -57,7 +57,7 @@ const PlanetSystem = () => {
 
 export default function PlanetsSection() {
   return (
-    <section className="w-full h-screen relative z-10 bg-black text-white overflow-hidden">
+    <DestinationFrame id="planets">
       <Canvas camera={{ position: [0, 5, 25], fov: 45 }} shadows>
         <ambientLight intensity={0.3} />
         <pointLight position={[10, 10, 10]} intensity={2} castShadow />
@@ -65,17 +65,7 @@ export default function PlanetsSection() {
         <OrbitControls enableZoom={true} />
         <SoftShadows size={10} samples={30} focus={1} />
         <PlanetSystem />
-        <Html center position={[5, 6, 0]}>
-          <motion.h2
-            className="text-4xl md:text-5xl font-bold text-white text-center"
-            initial={{ opacity: 0, y: -40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            The Solar System
-          </motion.h2>
-        </Html>
       </Canvas>
-    </section>
+    </DestinationFrame>
   );
 }

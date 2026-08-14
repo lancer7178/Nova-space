@@ -2,9 +2,9 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
-import { motion } from "framer-motion";
 import * as THREE from "three";
 import { useRef, useState } from "react";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const Portal = ({
   position,
@@ -123,8 +123,8 @@ const PortalParticles = ({
 
 export default function MysticalPortalsSection() {
   return (
-    <section className="w-full min-h-screen bg-gradient-to-b from-black via-purple-950 to-black text-white relative z-10 overflow-hidden">
-      <div className="w-full h-[100vh]">
+    <DestinationFrame id="mystical-portals">
+      <div className="w-full h-full">
         <Canvas camera={{ position: [0, 0, 20], fov: 50 }} shadows>
           <color attach="background" args={["#0a0514"]} />
           <Portal
@@ -160,27 +160,6 @@ export default function MysticalPortalsSection() {
           <OrbitControls autoRotate autoRotateSpeed={0.3} />
         </Canvas>
       </div>
-
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-20 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Mystical Portals
-        </motion.h2>
-        <motion.p
-          className="text-center text-purple-200 text-sm md:text-base max-w-2xl mt-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
-          Step through dimensional gateways and witness the convergence of
-          parallel realities. Each portal reveals new worlds and infinite
-          possibilities.
-        </motion.p>
-      </div>
-    </section>
+    </DestinationFrame>
   );
 }

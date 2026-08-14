@@ -3,8 +3,8 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { useRef, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import * as THREE from 'three';
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const MagneticField = () => {
   const particlesRef = useRef<THREE.Points>(null);
@@ -51,18 +51,7 @@ const MagneticField = () => {
 
 export default function MagneticFieldsSection() {
   return (
-    <section className="w-full h-screen bg-black text-white relative z-10 overflow-hidden">
-      {/* النص العلوي */}
-      <motion.h2
-        className="absolute top-10 w-full text-center text-4xl font-bold z-20 pointer-events-none"
-        initial={{ opacity: 0, y: -40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
-        Mysterious Magnetic Fields
-      </motion.h2>
-
-      {/* الـ Canvas 3D */}
+    <DestinationFrame id="magnetic-fields">
       <Canvas
         className="absolute top-0 left-0 w-full h-full"
         camera={{ position: [0, 0, 20], fov: 60 }}
@@ -73,6 +62,6 @@ export default function MagneticFieldsSection() {
         <OrbitControls enableZoom={true} />
         <MagneticField />
       </Canvas>
-    </section>
+    </DestinationFrame>
   );
 }

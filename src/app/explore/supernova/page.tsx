@@ -3,8 +3,8 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useMemo, useRef } from "react";
-import { motion } from "framer-motion";
 import * as THREE from "three";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 function SupernovaCore() {
   const coreRef = useRef<THREE.Mesh>(null);
@@ -134,27 +134,7 @@ function ExplosionShell({
 
 export default function SupernovaSection() {
   return (
-    <section className="relative w-full h-screen bg-black text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Supernova
-        </motion.h2>
-        <motion.p
-          className="mt-4 text-lg md:text-xl text-gray-300 text-center max-w-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1 }}
-        >
-          Witness the violent death of a massive star — an explosion brighter
-          than entire galaxies
-        </motion.p>
-      </div>
-
+    <DestinationFrame id="supernova">
       <Canvas
         className="absolute top-0 left-0 w-full h-full"
         camera={{ position: [0, 0, 18], fov: 60 }}
@@ -199,6 +179,6 @@ export default function SupernovaSection() {
           sizeVal={0.18}
         />
       </Canvas>
-    </section>
+    </DestinationFrame>
   );
 }

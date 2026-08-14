@@ -2,9 +2,9 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
-import { motion } from "framer-motion";
 import * as THREE from "three";
 import { useRef } from "react";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 type CreatureProps = {
   position: [number, number, number];
@@ -45,19 +45,8 @@ const HorrorCreature = ({
 
 export default function AlienHorrorSection() {
   return (
-    <section className="w-full min-h-screen bg-black text-red-100 relative z-10 overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          👁️‍🗨️ Terrifying Alien Creatures
-        </motion.h2>
-      </div>
-
-      <div className="w-full h-[100vh]">
+    <DestinationFrame id="alien-creatures">
+      <div className="w-full h-full">
         <Canvas shadows camera={{ position: [0, 5, 30], fov: 60 }}>
           {/* إضاءة مرعبة حمراء مع ظل خفيف */}
           <ambientLight intensity={0.05} />
@@ -92,6 +81,6 @@ export default function AlienHorrorSection() {
           <HorrorCreature position={[10, 0, 5]} size={2.2} color="#440011" />
         </Canvas>
       </div>
-    </section>
+    </DestinationFrame>
   );
 }

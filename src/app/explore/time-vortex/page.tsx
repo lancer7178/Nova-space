@@ -2,9 +2,9 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
-import { motion } from "framer-motion";
 import * as THREE from "three";
 import { useRef, useState, useMemo } from "react";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const TimeRing = ({
   index,
@@ -129,8 +129,8 @@ const TimeParticles = () => {
 
 export default function TimeVortexSection() {
   return (
-    <section className="w-full min-h-screen bg-black text-white relative z-10 overflow-hidden">
-      <div className="w-full h-[100vh]">
+    <DestinationFrame id="time-vortex">
+      <div className="w-full h-full">
         <Canvas camera={{ position: [0, 0, 25], fov: 50 }} shadows>
           <color attach="background" args={["#0a0a14"]} />
 
@@ -164,45 +164,6 @@ export default function TimeVortexSection() {
           <OrbitControls autoRotate autoRotateSpeed={0.1} />
         </Canvas>
       </div>
-
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-20 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Time Vortex
-        </motion.h2>
-        <motion.p
-          className="text-center text-purple-200 text-sm md:text-base max-w-2xl mt-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
-          Enter a dimensional maelstrom where past, present, and future
-          converge. Navigate through temporal rings and witness the flow of
-          eternity.
-        </motion.p>
-      </div>
-
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 pointer-events-auto z-30">
-        <motion.div
-          className="bg-black/50 border border-purple-500/50 rounded-lg px-6 py-3 backdrop-blur-sm"
-          animate={{
-            borderColor: [
-              "rgba(168, 85, 247, 0.5)",
-              "rgba(168, 85, 247, 0.8)",
-              "rgba(168, 85, 247, 0.5)",
-            ],
-          }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <p className="text-purple-300 text-xs font-mono">
-            Temporal Coordinates: [Past ← Present → Future]
-          </p>
-        </motion.div>
-      </div>
-    </section>
+    </DestinationFrame>
   );
 }

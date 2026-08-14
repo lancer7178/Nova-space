@@ -2,9 +2,9 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, Points, PointMaterial } from "@react-three/drei";
-import { motion } from "framer-motion";
 import * as THREE from "three";
 import { useRef, useMemo, useState } from "react";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const DustCloud = ({ color, scale }: { color: string; scale: number }) => {
   const pointsRef = useRef<THREE.Points>(null);
@@ -92,8 +92,8 @@ const FloatingCrystal = ({
 
 export default function CosmicDustSection() {
   return (
-    <section className="w-full min-h-screen bg-black text-white relative z-10 overflow-hidden">
-      <div className="w-full h-[100vh]">
+    <DestinationFrame id="cosmic-dust">
+      <div className="w-full h-full">
         <Canvas camera={{ position: [0, 0, 30], fov: 45 }} shadows>
           <color attach="background" args={["#0a0514"]} />
           <DustCloud color="#ff69b4" scale={0.8} />
@@ -125,27 +125,6 @@ export default function CosmicDustSection() {
           <OrbitControls autoRotate autoRotateSpeed={0.2} />
         </Canvas>
       </div>
-
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-20 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Cosmic Dust Clouds
-        </motion.h2>
-        <motion.p
-          className="text-center text-gray-300 text-sm md:text-base max-w-2xl mt-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
-          Navigate through nebular dust clouds where stellar matter coalesces
-          and new worlds are born. Discover crystalline formations within the
-          cosmic fog.
-        </motion.p>
-      </div>
-    </section>
+    </DestinationFrame>
   );
 }

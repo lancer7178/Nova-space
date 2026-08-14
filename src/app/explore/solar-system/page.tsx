@@ -3,8 +3,8 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useRef } from "react";
-import { motion } from "framer-motion";
 import * as THREE from "three";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const PLANETS = [
   { name: "Mercury", distance: 3, size: 0.15, color: "#A0A0A0", speed: 2.0 },
@@ -136,27 +136,7 @@ function SolarSystemScene() {
 
 export default function SolarSystemSection() {
   return (
-    <section className="relative w-full h-screen bg-black text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Solar System
-        </motion.h2>
-        <motion.p
-          className="mt-4 text-lg md:text-xl text-gray-300 text-center max-w-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1 }}
-        >
-          Eight worlds orbiting our star — from scorching Mercury to frozen
-          Neptune
-        </motion.p>
-      </div>
-
+    <DestinationFrame id="solar-system">
       <Canvas
         className="absolute top-0 left-0 w-full h-full"
         camera={{ position: [5, 15, 25], fov: 55 }}
@@ -166,6 +146,6 @@ export default function SolarSystemSection() {
         <OrbitControls enableZoom={true} autoRotate autoRotateSpeed={0.2} />
         <SolarSystemScene />
       </Canvas>
-    </section>
+    </DestinationFrame>
   );
 }

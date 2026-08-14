@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { Rocket, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDiscovery } from "@/components/universe/DiscoveryProvider";
 
 const EXPLORE_LINKS = [
   { href: "/explore/planets", label: "Planets" },
@@ -32,6 +33,7 @@ export default function Navbar() {
   const [exploreDropdown, setExploreDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { discovered } = useDiscovery();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -122,8 +124,9 @@ export default function Navbar() {
                     <span className="text-xs font-bold text-gray-500 tracking-widest uppercase">
                       Select Destination
                     </span>
-                    <span className="text-xs text-gray-600 bg-white/5 px-2 py-1 rounded-md">
-                      20 Topics Active
+                    <span className="text-xs text-gray-500 bg-white/5 px-2 py-1 rounded-md tabular-nums">
+                      {String(discovered.length).padStart(2, "0")} /{" "}
+                      {EXPLORE_LINKS.length} discovered
                     </span>
                   </div>
 

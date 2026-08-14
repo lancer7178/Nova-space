@@ -3,8 +3,8 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useMemo } from "react";
-import { motion } from "framer-motion";
 import * as THREE from "three";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 const Constellation = () => {
   const stars = useMemo(
@@ -46,19 +46,8 @@ const Constellation = () => {
 
 export default function ConstellationsSection() {
   return (
-    <section className="w-full min-h-screen bg-black text-white relative z-10 overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Constellations{" "}
-        </motion.h2>
-      </div>
-
-      <div className="w-full h-screen">
+    <DestinationFrame id="constellations">
+      <div className="w-full h-full">
         <Canvas camera={{ position: [0, 0, 15], fov: 60 }}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={1.2} />
@@ -74,6 +63,6 @@ export default function ConstellationsSection() {
           <Constellation />
         </Canvas>
       </div>
-    </section>
+    </DestinationFrame>
   );
 }

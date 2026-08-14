@@ -3,8 +3,8 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useMemo, useRef } from "react";
-import { motion } from "framer-motion";
 import * as THREE from "three";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 function Galaxy() {
   const galaxyRef = useRef<THREE.Points>(null);
@@ -75,19 +75,7 @@ function Galaxy() {
 
 export default function GalaxiesSection() {
   return (
-    <section className="relative w-full h-screen bg-black text-white overflow-hidden">
-      {/* العنوان */}
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start z-10 px-6 pt-20 md:pt-12 pointer-events-none">
-        <motion.h2
-          className="text-4xl md:text-6xl font-extrabold text-center text-white drop-shadow-lg"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Galaxies Beyond
-        </motion.h2>
-      </div>
-      {/* مشهد المجرة */}
+    <DestinationFrame id="galaxies">
       <Canvas
         className="absolute top-0 left-0 w-full h-full"
         camera={{ position: [0, 0, 25], fov: 70 }}
@@ -97,6 +85,6 @@ export default function GalaxiesSection() {
         <OrbitControls enableZoom={true} />
         <Galaxy />
       </Canvas>
-    </section>
+    </DestinationFrame>
   );
 }

@@ -4,28 +4,15 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, Sparkles } from "@react-three/drei";
 import { Suspense, useRef } from "react";
-import { motion } from "framer-motion";
+import DestinationFrame from "@/components/universe/DestinationFrame";
 
 export default function FirePlanetPage() {
   return (
-    <div className="bg-black min-h-screen flex flex-col overflow-x-hidden">
-      {/* نص فوق */}
-      <header className="relative z-20 w-full py-6 pt-20 md:pt-6 flex justify-center px-4 max-w-full box-border">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center text-white drop-shadow-lg max-w-4xl"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Fiery Planet of Doom
-        </motion.h2>
-      </header>
-
-      {/* الجزء الخاص بالكانفس */}
-      <main className="flex-grow relative z-10 w-full h-screen">
+    <DestinationFrame id="fire-planet">
+      <main className="w-full h-full">
         <Canvas
           camera={{ position: [0, 2, 8], fov: 60 }}
-          style={{ width: "100vw", height: "100vh", display: "block" }}
+          style={{ width: "100%", height: "100%", display: "block" }}
         >
           <ambientLight intensity={0.3} />
           <pointLight position={[5, 5, 5]} intensity={3} color="orange" />
@@ -37,7 +24,7 @@ export default function FirePlanetPage() {
           </Suspense>
         </Canvas>
       </main>
-    </div>
+    </DestinationFrame>
   );
 }
 
