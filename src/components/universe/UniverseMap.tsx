@@ -15,6 +15,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import * as THREE from "three";
 import { DESTINATIONS, TOTAL_DESTINATIONS, getDestination } from "@/lib/destinations";
 import { useDiscovery } from "@/components/universe/DiscoveryProvider";
+import { useWebGLSupport } from "@/lib/webgl";
 
 /* -------------------------------------------------------------------------- */
 /*  Layout: deterministic golden-spiral placement on a slightly flattened     */
@@ -238,6 +239,7 @@ function Scene({
   onHover,
   onSelect,
   onArrive,
+  recenterRef,
 }: {
   nodes: Node[];
   hoveredId: string | null;
@@ -247,8 +249,18 @@ function Scene({
   onHover: (id: string | null) => void;
   onSelect: (id: string) => void;
   onArrive: (id: string) => void;
+  recenterRef: React.MutableRefObject<(() => void) | null>;
 }) {
   const { isDiscovered } = useDiscovery();
+  const controlsRef = useRef<React.ElementRef<typeof OrbitControls>>(null);
+
+  // Expose a recenter action to the DOM overlay outside the Canvas.
+  useEffect(() => {
+    recenterRef.current = () => controlsRef.current?.reset();
+    return () => {
+      recenterRef.current = null;
+    };
+  }, [recenterRef]);
 
   return (
     <>
@@ -292,6 +304,7 @@ function Scene({
       ))}
 
       <OrbitControls
+        ref={controlsRef}
         enabled={!travelId}
         enablePan={false}
         enableZoom
@@ -321,8 +334,10 @@ export default function UniverseMap() {
   const router = useRouter();
   const nodes = useNodes();
   const reducedMotion = usePrefersReducedMotion();
+  const webgl = useWebGLSupport();
   const { discovered, lastId, ready } = useDiscovery();
 
+  const recenterRef = useRef<(() => void) | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [travelId, setTravelId] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -371,6 +386,54 @@ export default function UniverseMap() {
   const count = discovered.length;
   const last = lastId ? getDestination(lastId) : null;
 
+  // Graceful fallback when WebGL can't run — a themed, fully navigable index
+  // rather than a blank or broken canvas.
+  if (!webgl) {
+    return (
+      <div className="relative min-h-[100dvh] w-full overflow-hidden bg-black text-white">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(80,90,140,0.15),#000_62%)]" />
+        <div className="relative z-10 mx-auto max-w-3xl px-6 pb-16 pt-28">
+          <p className="font-mono text-[11px] tracking-[0.35em] text-gray-500 uppercase">
+            {String(count).padStart(2, "0")} / {TOTAL_DESTINATIONS} discovered
+          </p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
+            Explore the Universe
+          </h1>
+          <p className="mt-3 max-w-md text-gray-400">
+            Somewhere beyond what we know. Choose a destination to begin.
+          </p>
+          <ul className="mt-10 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {DESTINATIONS.map((d) => (
+              <li key={d.id}>
+                <Link
+                  href={`/explore/${d.id}`}
+                  className="group flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-colors hover:border-white/25 hover:bg-white/[0.06]"
+                >
+                  <span className="flex items-center gap-3">
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{
+                        backgroundColor: discovered.includes(d.id)
+                          ? d.color
+                          : "#3a4257",
+                      }}
+                    />
+                    <span className="text-gray-200 group-hover:text-white">
+                      {d.name}
+                    </span>
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {discovered.includes(d.id) ? "✓" : "→"}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden bg-black text-white">
       <Canvas
@@ -388,6 +451,7 @@ export default function UniverseMap() {
           onHover={setHoveredId}
           onSelect={select}
           onArrive={arrive}
+          recenterRef={recenterRef}
         />
       </Canvas>
 
@@ -443,6 +507,14 @@ export default function UniverseMap() {
           You are here
         </span>
       </div>
+
+      {/* Recenter the universe */}
+      <button
+        onClick={() => recenterRef.current?.()}
+        className="pointer-events-auto absolute left-1/2 top-24 z-30 -translate-x-1/2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 font-mono text-[10px] tracking-[0.3em] text-gray-400 uppercase backdrop-blur-md transition-colors hover:border-white/25 hover:text-white"
+      >
+        ⌖ Recenter
+      </button>
 
       {/* Hovered destination read-out */}
       <AnimatePresence>

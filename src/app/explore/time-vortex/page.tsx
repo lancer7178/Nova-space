@@ -3,26 +3,49 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import DestinationFrame from "@/components/universe/DestinationFrame";
+
+type NumRef = React.MutableRefObject<number>;
+
+/**
+ * A single shared "time" value drives every animation, advanced each frame by
+ * delta * speed. The speed control can run it forward, pause it, speed it up,
+ * or reverse it — so the whole vortex responds as one, and negative speed makes
+ * the rings and particles genuinely run backward.
+ */
+function TimeDriver({ timeRef, speedRef }: { timeRef: NumRef; speedRef: NumRef }) {
+  useFrame((_, delta) => {
+    timeRef.current += delta * speedRef.current;
+  });
+  return null;
+}
 
 const TimeRing = ({
   index,
   rotation,
+  timeRef,
+  speedRef,
 }: {
   index: number;
   rotation: THREE.Euler;
+  timeRef: NumRef;
+  speedRef: NumRef;
 }) => {
   const ref = useRef<THREE.Mesh>(null);
   const radius = 5 + index * 1.5;
   const [hovered, setHovered] = useState(false);
 
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (ref.current) {
-      const t = state.clock.getElapsedTime();
+      const t = timeRef.current;
       ref.current.rotation.x = rotation.x;
       ref.current.rotation.y +=
-        (hovered ? 0.008 : 0.003) * (index % 2 === 0 ? 1 : -1);
+        (hovered ? 0.008 : 0.003) *
+        (index % 2 === 0 ? 1 : -1) *
+        speedRef.current *
+        delta *
+        60;
       ref.current.rotation.z = rotation.z + Math.sin(t + index) * 0.1;
       ref.current.scale.setScalar(1 + (hovered ? 0.15 : 0));
     }
@@ -49,14 +72,13 @@ const TimeRing = ({
   );
 };
 
-const VortexCore = () => {
+const VortexCore = ({ timeRef, speedRef }: { timeRef: NumRef; speedRef: NumRef }) => {
   const coneRef = useRef<THREE.Mesh>(null);
 
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (coneRef.current) {
-      const t = state.clock.getElapsedTime();
-      coneRef.current.rotation.z += 0.01;
-      coneRef.current.scale.setScalar(1 + Math.sin(t * 2) * 0.1);
+      coneRef.current.rotation.z += 0.01 * speedRef.current * delta * 60;
+      coneRef.current.scale.setScalar(1 + Math.sin(timeRef.current * 2) * 0.1);
     }
   });
 
@@ -75,7 +97,7 @@ const VortexCore = () => {
   );
 };
 
-const TimeParticles = () => {
+const TimeParticles = ({ timeRef }: { timeRef: NumRef }) => {
   const particlesRef = useRef<THREE.InstancedMesh>(null);
   const count = 150;
 
@@ -95,10 +117,10 @@ const TimeParticles = () => {
     return positions;
   }, []);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (particlesRef.current) {
-      const t = state.clock.getElapsedTime();
-      initialPositions.forEach((pos, i) => {
+      const t = timeRef.current;
+      initialPositions.forEach((_, i) => {
         const angle = (i / count) * Math.PI * 2 + t * 0.3;
         const distance = 8 + Math.sin(t + i) * 2;
         const matrix = new THREE.Matrix4();
@@ -127,22 +149,66 @@ const TimeParticles = () => {
   );
 };
 
+const SPEEDS = [
+  { label: "◀◀", value: -1, title: "Reverse time" },
+  { label: "❚❚", value: 0, title: "Pause time" },
+  { label: "▶", value: 1, title: "Normal flow" },
+  { label: "▶▶", value: 2, title: "Accelerate time" },
+];
+
 export default function TimeVortexSection() {
+  const timeRef = useRef(0);
+  const speedRef = useRef(1);
+  const [speed, setSpeed] = useState(1);
+
+  useEffect(() => {
+    speedRef.current = speed;
+  }, [speed]);
+
   return (
-    <DestinationFrame id="time-vortex">
+    <DestinationFrame
+      id="time-vortex"
+      action={
+        <div className="flex flex-col items-center gap-2">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-gray-500 uppercase">
+            Flow of time
+          </span>
+          <div className="flex items-center gap-1 rounded-full border border-white/15 bg-white/5 p-1 backdrop-blur-md">
+            {SPEEDS.map((o) => (
+              <button
+                key={o.value}
+                onClick={() => setSpeed(o.value)}
+                title={o.title}
+                aria-label={o.title}
+                aria-pressed={speed === o.value}
+                className={`rounded-full px-4 py-2 text-sm tabular-nums transition-colors ${
+                  speed === o.value
+                    ? "bg-white/15 text-white"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      }
+    >
       <div className="w-full h-full">
         <Canvas camera={{ position: [0, 0, 25], fov: 50 }} shadows>
           <color attach="background" args={["#0a0a14"]} />
 
-          {/* Time rings with different rotations */}
-          <TimeRing index={0} rotation={new THREE.Euler(0.3, 0.2, 0)} />
-          <TimeRing index={1} rotation={new THREE.Euler(0.5, 0.1, 0.2)} />
-          <TimeRing index={2} rotation={new THREE.Euler(0.2, 0.4, 0.1)} />
-          <TimeRing index={3} rotation={new THREE.Euler(0.4, 0.3, 0.3)} />
-          <TimeRing index={4} rotation={new THREE.Euler(0.1, 0.5, 0.2)} />
+          <TimeDriver timeRef={timeRef} speedRef={speedRef} />
 
-          <VortexCore />
-          <TimeParticles />
+          {/* Time rings with different rotations */}
+          <TimeRing index={0} rotation={new THREE.Euler(0.3, 0.2, 0)} timeRef={timeRef} speedRef={speedRef} />
+          <TimeRing index={1} rotation={new THREE.Euler(0.5, 0.1, 0.2)} timeRef={timeRef} speedRef={speedRef} />
+          <TimeRing index={2} rotation={new THREE.Euler(0.2, 0.4, 0.1)} timeRef={timeRef} speedRef={speedRef} />
+          <TimeRing index={3} rotation={new THREE.Euler(0.4, 0.3, 0.3)} timeRef={timeRef} speedRef={speedRef} />
+          <TimeRing index={4} rotation={new THREE.Euler(0.1, 0.5, 0.2)} timeRef={timeRef} speedRef={speedRef} />
+
+          <VortexCore timeRef={timeRef} speedRef={speedRef} />
+          <TimeParticles timeRef={timeRef} />
 
           <Stars
             radius={300}

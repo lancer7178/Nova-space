@@ -1,10 +1,24 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Stars } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Stars } from "@react-three/drei";
+import { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import DestinationFrame from "@/components/universe/DestinationFrame";
+
+/**
+ * Flies the camera down the tunnel and back. The travel *is* the interaction —
+ * so there's no free orbit here; the camera stays aimed down the throat and
+ * eases (damp) between the outer mouth (z=8) and deep inside (z=-17).
+ */
+function TunnelTravel({ target }: { target: number }) {
+  const { camera } = useThree();
+  useFrame((_, delta) => {
+    camera.position.z = THREE.MathUtils.damp(camera.position.z, target, 2, delta);
+    camera.lookAt(0, 0, -25);
+  });
+  return null;
+}
 
 function WormholeTunnel() {
   const ref = useRef<THREE.Points>(null);
@@ -128,8 +142,20 @@ function CenterGlow() {
 }
 
 export default function WormholeSection() {
+  const [inside, setInside] = useState(false);
+
   return (
-    <DestinationFrame id="wormhole">
+    <DestinationFrame
+      id="wormhole"
+      action={
+        <button
+          onClick={() => setInside((v) => !v)}
+          className="rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm tracking-wide text-white backdrop-blur-md transition-all hover:border-white/40 hover:bg-white/10"
+        >
+          {inside ? "↺ Travel back" : "Travel through the tunnel →"}
+        </button>
+      }
+    >
       <Canvas
         className="absolute top-0 left-0 w-full h-full"
         camera={{ position: [0, 0, 8], fov: 70 }}
@@ -148,7 +174,7 @@ export default function WormholeSection() {
           distance={30}
         />
         <Stars radius={200} depth={80} count={2000} factor={4} fade />
-        <OrbitControls enableZoom={true} />
+        <TunnelTravel target={inside ? -17 : 8} />
         <WormholeTunnel />
         <WormholeRings />
         <CenterGlow />

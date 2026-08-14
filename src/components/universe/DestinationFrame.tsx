@@ -6,22 +6,29 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { getDestination } from "@/lib/destinations";
 import { useDiscovery } from "@/components/universe/DiscoveryProvider";
+import { useWebGLSupport } from "@/lib/webgl";
 
 /**
  * Wraps a destination's 3D scene with the shared Nova Space experience layer:
  * quiet metadata, one concise revealable fact, a "signal detected" moment the
  * first time you arrive, and a clear route back to the universe. The scene
  * itself (passed as children) stays untouched and keeps its own interactions.
+ *
+ * `action` is an optional destination-specific control (e.g. "Travel through
+ * the tunnel") rendered in a consistent bottom-centre slot above the scene.
  */
 export default function DestinationFrame({
   id,
   children,
+  action,
 }: {
   id: string;
   children: React.ReactNode;
+  action?: React.ReactNode;
 }) {
   const destination = getDestination(id);
   const { discover, isDiscovered } = useDiscovery();
+  const webgl = useWebGLSupport();
   const [alreadyKnown] = useState(() => isDiscovered(id));
   const [detected, setDetected] = useState(false);
   const [factIndex, setFactIndex] = useState(0);
@@ -47,8 +54,20 @@ export default function DestinationFrame({
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden bg-black text-white">
-      {/* The destination's own 3D scene */}
-      <div className="absolute inset-0">{children}</div>
+      {/* The destination's own 3D scene — or a calm static backdrop when WebGL
+          is unavailable, so the overlay content below is still explorable. */}
+      <div className="absolute inset-0">
+        {webgl ? (
+          children
+        ) : (
+          <div
+            className="h-full w-full"
+            style={{
+              background: `radial-gradient(circle at 50% 42%, ${destination.color}22, #05060a 62%)`,
+            }}
+          />
+        )}
+      </div>
 
       {/* Subtle vignette so overlay text stays legible over the scene */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
@@ -139,6 +158,13 @@ export default function DestinationFrame({
         />
         <span className="tracking-wide">Return to Universe</span>
       </Link>
+
+      {/* Destination-specific interaction control (optional) */}
+      {action && webgl && (
+        <div className="pointer-events-auto absolute bottom-24 left-1/2 z-20 -translate-x-1/2 md:bottom-10">
+          {action}
+        </div>
+      )}
 
       {/* "Signal detected" moment — only on genuinely new discoveries */}
       <AnimatePresence>
